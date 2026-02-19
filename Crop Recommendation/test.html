@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crop Predictor Test</title>
+</head>
+<body>
+
+<h2>Crop Recommendation Test</h2>
+
+<form id="cropForm">
+  N: <input type="number" id="N" value="90"><br><br>
+  P: <input type="number" id="P" value="42"><br><br>
+  K: <input type="number" id="K" value="43"><br><br>
+  Temperature: <input type="number" id="temp" value="20"><br><br>
+  Humidity: <input type="number" id="hum" value="82"><br><br>
+  pH: <input type="number" step="0.1" id="ph" value="6.5"><br><br>
+  Rainfall: <input type="number" id="rain" value="202"><br><br>
+
+  <button type="submit">Predict Crop</button>
+</form>
+
+<h3 id="result"></h3>
+
+<script>
+document.getElementById("cropForm").onsubmit = async (e) => {
+  e.preventDefault();
+
+  const data = {
+    N: Number(N.value),
+    P: Number(P.value),
+    K: Number(K.value),
+    temperature: Number(temp.value),
+    humidity: Number(hum.value),
+    ph: Number(ph.value),
+    rainfall: Number(rain.value)
+  };
+
+  const res = await fetch("http://127.0.0.1:8000/predict", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  });
+
+  const out = await res.json();
+  document.getElementById("result").innerText =
+    "Recommended Crop: " + out.crop;
+};
+</script>
+
+</body>
+</html>
